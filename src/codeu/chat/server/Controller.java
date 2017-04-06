@@ -39,6 +39,14 @@ public final class Controller implements RawController, BasicController {
   }
 
   @Override
+  public Message newChatBotMessage(Uuid author, Uuid conversation, String body) {
+    Message message = null;
+    final String response = "Hi user, I am a ChatBot in development stage. I give same response every time."; //constant response
+    message = new Message(createId(), Uuids.NULL, Uuids.NULL, Time.now(), author, response);
+    return message;
+  }
+
+  @Override
   public Message newMessage(Uuid author, Uuid conversation, String body) {
     return newMessage(createId(), author, conversation, body, Time.now());
   }

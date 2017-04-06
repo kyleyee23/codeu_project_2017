@@ -97,7 +97,20 @@ public final class Server {
 
       sendToRelay(author, conversation, message.id);
 
-    } else if (type == NetworkCode.NEW_USER_REQUEST) {
+    } else if (type == NetworkCode.NEW_CHATBOTMESSAGE_REQUEST) {
+
+      final Uuid author = Uuids.SERIALIZER.read(in);
+      final Uuid conversation = Uuids.SERIALIZER.read(in);
+      final String content = Serializers.STRING.read(in);
+      
+      final Message message = controller.newChatBotMessage(author, conversation, content);
+
+      Serializers.INTEGER.write(out, NetworkCode.NEW_CHATBOTMESSAGE_RESPONSE);
+      Serializers.nullable(Message.SERIALIZER).write(out, message);
+
+      sendToRelay(author, conversation, message.id);
+      
+    }  else if (type == NetworkCode.NEW_USER_REQUEST) {
 
       final String name = Serializers.STRING.read(in);
 

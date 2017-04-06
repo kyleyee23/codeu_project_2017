@@ -105,16 +105,17 @@ public final class ClientMessage {
     // checks if the message body requests a bot call. Once ChatBot is called,
     // a client user should enter "m-add exit" to stop getting response from ChatBot.
     final ChatBot chatBot = new ChatBot(controller, author, conversation);
-    if (chatBot.checkBotCall(body) || botCalled) {
-        botCalled = (chatBot.isRunning(body));
+    if (ChatBot.checkBotCall(body) || botCalled) {
+        botCalled = (ChatBot.isRunning(body));
         if (validInputs) {
           final Message response = chatBot.getResponse(body);
+          if (response == null) {
+            System.out.println("Error: no response -server error");
+          }
           System.out.println(response.content);
+        } else {
+          System.out.println("Error: no response -bad input value");
         } 
-        if (response == null) {
-          System.out.format("Error: no response - %s.\n",
-            (validInputs) ? "server error" : "bad input value");
-        }  
     }
     if (message == null) {
       System.out.format("Error: message not created - %s.\n",

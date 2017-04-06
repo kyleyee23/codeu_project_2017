@@ -45,7 +45,7 @@ public final class ChatBot {
     }
 
     // checks if a client has quit session with ChatBot.
-	public boolean isRunning(String body) {
+	public static boolean isRunning(String body) {
 		if (body.equals("exit")){
 			return false;
 		}
