@@ -23,6 +23,13 @@ package codeu.chat.common;
 //   from the controller may have no effect on the server's state.
 public interface BasicController {
 
+  // NEW CHATBOT MESSAGE
+  //   Create a new message for chatbot on the server. If operation is 
+  //   successful, a Message object will be returned that contains response
+  //   from the server based on the content of the message sent from client.
+  //   LIMITATION: constant response from server
+  Message newChatBotMessage(Uuid author, Uuid conversation, String body);
+
   // NEW MESSAGE
   //
   //   Create a new message on the server. All parameters must be provided

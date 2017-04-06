@@ -41,6 +41,28 @@ public class Controller implements BasicController {
   }
 
   @Override
+  public Message newChatBotMessage(Uuid author, Uuid conversation, String body) {
+    Message response = null;
+    try (final Connection connection = source.connect()) {
+
+      Serializers.INTEGER.write(connection.out(), NetworkCode.NEW_CHATBOTMESSAGE_REQUEST);
+      Uuids.SERIALIZER.write(connection.out(), author);
+      Uuids.SERIALIZER.write(connection.out(), conversation);
+      Serializers.STRING.write(connection.out(), body);
+
+      if (Serializers.INTEGER.read(connection.in()) == NetworkCode.NEW_CHATBOTMESSAGE_RESPONSE) {
+        response = Serializers.nullable(Message.SERIALIZER).read(connection.in());
+      } else {
+        LOG.error("Response from server failed.");
+      }
+    } catch (Exception ex) {
+      System.out.println("ERROR: Exception during call on server. Check log for details.");
+      LOG.error(ex, "Exception during call on server.");
+    }
+    return response;
+  }
+
+  @Override
   public Message newMessage(Uuid author, Uuid conversation, String body) {
 
     Message response = null;
