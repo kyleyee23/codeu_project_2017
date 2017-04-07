@@ -38,6 +38,7 @@ public final class ClientMessage {
   private final View view;
 
   private Message current = null;
+  private boolean botCalled = false;
 
   private final Map<Uuid, Message> messageByUuid = new HashMap<>();
 
@@ -101,7 +102,21 @@ public final class ClientMessage {
     final boolean validInputs = isValidBody(body) && (author != null) && (conversation != null);
 
     final Message message = (validInputs) ? controller.newMessage(author, conversation, body) : null;
-
+    // checks if the message body requests a bot call. Once ChatBot is called,
+    // a client user should enter "m-add exit" to stop getting response from ChatBot.
+    final ChatBot chatBot = new ChatBot(controller, author, conversation);
+    if (ChatBot.checkBotCall(body) || botCalled) {
+        botCalled = (ChatBot.isRunning(body));
+        if (validInputs) {
+          final Message response = chatBot.getResponse(body);
+          if (response == null) {
+            System.out.println("Error: no response -server error");
+          }
+          System.out.println(response.content);
+        } else {
+          System.out.println("Error: no response -bad input value");
+        } 
+    }
     if (message == null) {
       System.out.format("Error: message not created - %s.\n",
           (validInputs) ? "server error" : "bad input value");

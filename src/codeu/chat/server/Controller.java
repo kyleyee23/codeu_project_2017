@@ -37,6 +37,14 @@ public final class Controller implements RawController, BasicController {
     this.model = model;
     this.uuidGenerator = new RandomUuidGenerator(serverId, System.currentTimeMillis());
   }
+  // todo: handle the requests by generating responses based on the content of the message body
+  @Override
+  public Message newChatBotMessage(Uuid author, Uuid conversation, String body) {
+    Message message = null;
+    final String response = "Hi user, I am a ChatBot in development stage. I give same response every time."; //constant response
+    message = new Message(createId(), Uuids.NULL, Uuids.NULL, Time.now(), author, response);
+    return message;
+  }
 
   @Override
   public Message newMessage(Uuid author, Uuid conversation, String body) {
