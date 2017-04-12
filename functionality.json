@@ -1,0 +1,27 @@
+{
+  "entries": [
+    {
+      "value": "weather",
+      "synonyms": [
+        "weather",
+        "temperature"
+      ]
+    },
+    {
+      "value": "create",
+      "synonyms": [
+        "create",
+        "make",
+        "new chat"
+      ]
+    },
+    {
+      "value": "define",
+      "synonyms": [
+        "define",
+        "google",
+        "look up"
+      ]
+    }
+  ]
+}
